@@ -1,0 +1,101 @@
+[
+  {
+    "id": "inc_1795495820272_f3oy",
+    "serviceId": "smkcc-assetx",
+    "serviceName": "smkccAssetX",
+    "title": "smkccAssetX ประสิทธิภาพลดลง (Degraded)",
+    "details": "ฐานข้อมูลตอบสนองช้า (3159 ms)",
+    "severity": "warning",
+    "startedAt": "2026-11-24T04:50:20.218Z",
+    "isResolved": true,
+    "resolvedAt": "2026-11-24T04:51:30.000Z"
+  },
+  {
+    "id": "inc_1795495690784_vmgn",
+    "serviceId": "smkcc-student-care",
+    "serviceName": "Student Care (ระบบดูแลนักศึกษา)",
+    "title": "Student Care (ระบบดูแลนักศึกษา) หยุดการทำงาน (Outage)",
+    "details": "ฐานข้อมูลขัดข้อง: The server does not support SSL connections",
+    "severity": "critical",
+    "startedAt": "2026-11-24T04:48:10.736Z",
+    "isResolved": true,
+    "resolvedAt": "2026-11-24T04:51:30.000Z"
+  },
+  {
+    "id": "inc_1795488902806_q2jl",
+    "serviceId": "smkcc-assetx",
+    "serviceName": "smkccAssetX",
+    "title": "smkccAssetX ประสิทธิภาพลดลง (Degraded)",
+    "details": "ฐานข้อมูลตอบสนองช้า (3015 ms)",
+    "severity": "warning",
+    "startedAt": "2026-11-24T02:55:02.767Z",
+    "isResolved": true,
+    "resolvedAt": "2026-11-24T03:23:25.420Z"
+  },
+  {
+    "id": "inc_1795484625250_3ekl",
+    "serviceId": "new-smkcc-web",
+    "serviceName": "New SMKCC Web & CMS",
+    "title": "New SMKCC Web & CMS หยุดการทำงาน (Outage)",
+    "details": "fetch failed",
+    "severity": "critical",
+    "startedAt": "2026-11-24T01:43:45.235Z",
+    "isResolved": true,
+    "resolvedAt": "2026-11-24T01:59:09.836Z"
+  },
+  {
+    "id": "inc_1795484625217_8377",
+    "serviceId": "attendance-system",
+    "serviceName": "ระบบเช็คชื่อเข้าเรียน (Attendance)",
+    "title": "ระบบเช็คชื่อเข้าเรียน (Attendance) หยุดการทำงาน (Outage)",
+    "details": "ฐานข้อมูลขัดข้อง: getaddrinfo ENOTFOUND ep-little-waterfall-aozptau3.c-2.ap-southeast-1.aws.neon.tech",
+    "severity": "critical",
+    "startedAt": "2026-11-24T01:43:45.201Z",
+    "isResolved": true,
+    "resolvedAt": "2026-11-24T01:45:02.761Z"
+  },
+  {
+    "id": "inc_1795484625185_6rxy",
+    "serviceId": "smcc-admission",
+    "serviceName": "ระบบรับสมัครเรียน (Admission)",
+    "title": "ระบบรับสมัครเรียน (Admission) หยุดการทำงาน (Outage)",
+    "details": "ฐานข้อมูลขัดข้อง: getaddrinfo ENOTFOUND ep-fragrant-heart-b31mmb3s-pooler.c-4.ap-southeast-1.aws.neon.tech",
+    "severity": "critical",
+    "startedAt": "2026-11-24T01:43:45.169Z",
+    "isResolved": true,
+    "resolvedAt": "2026-11-24T01:45:02.213Z"
+  },
+  {
+    "id": "inc_1795484625151_5ajq",
+    "serviceId": "smkcc-assetx",
+    "serviceName": "smkccAssetX",
+    "title": "smkccAssetX หยุดการทำงาน (Outage)",
+    "details": "ฐานข้อมูลขัดข้อง: getaddrinfo ENOTFOUND aws-1-ap-southeast-2.pooler.supabase.com",
+    "severity": "critical",
+    "startedAt": "2026-11-24T01:43:45.139Z",
+    "isResolved": true,
+    "resolvedAt": "2026-11-24T02:00:01.155Z"
+  },
+  {
+    "id": "inc_1795484625128_dd1o",
+    "serviceId": "smkcc-netmonitor",
+    "serviceName": "SMKCC Network NOC",
+    "title": "SMKCC Network NOC หยุดการทำงาน (Outage)",
+    "details": "fetch failed",
+    "severity": "critical",
+    "startedAt": "2026-11-24T01:43:45.114Z",
+    "isResolved": true,
+    "resolvedAt": "2026-11-24T01:45:01.882Z"
+  },
+  {
+    "id": "inc_1795484625084_0j7t",
+    "serviceId": "smkcc-it-helpdesk",
+    "serviceName": "SMKCC IT Helpdesk",
+    "title": "SMKCC IT Helpdesk ประสิทธิภาพลดลง (Degraded)",
+    "details": "เว็บแอปขัดข้อง (fetch failed)",
+    "severity": "warning",
+    "startedAt": "2026-11-24T01:43:45.078Z",
+    "isResolved": true,
+    "resolvedAt": "2026-11-24T01:45:02.913Z"
+  }
+]
