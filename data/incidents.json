@@ -1,5 +1,15 @@
 [
   {
+    "id": "inc_1795502276407_xwgr",
+    "serviceId": "smkcc-assetx",
+    "serviceName": "smkccAssetX",
+    "title": "smkccAssetX ประสิทธิภาพลดลง (Degraded)",
+    "details": "ฐานข้อมูลตอบสนองช้า (3165 ms)",
+    "severity": "warning",
+    "startedAt": "2026-11-24T06:37:56.353Z",
+    "isResolved": false
+  },
+  {
     "id": "inc_1795495820272_f3oy",
     "serviceId": "smkcc-assetx",
     "serviceName": "smkccAssetX",

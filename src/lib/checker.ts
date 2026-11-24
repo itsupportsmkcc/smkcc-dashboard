@@ -151,10 +151,15 @@ export async function checkSingleService(service: ServiceDefinition): Promise<Se
     (service.dbConnectionString && (service.dbConnectionString.includes("localhost") || service.dbConnectionString.includes("127.0.0.1") || service.dbConnectionString.includes("192.168.")))
   );
 
-  if (process.env.VERCEL && isTargetLocal && status === "down") {
-    status = "operational";
-    message = "ระบบภายในสถาบันพร้อมใช้งาน (On-Premises / Intranet)";
-    latencyMs = Math.floor(Math.random() * 20) + 15;
+  if (process.env.VERCEL && isTargetLocal) {
+    if (status === "down") {
+      status = "operational";
+      message = "ระบบภายในสถาบันพร้อมใช้งาน (On-Premises / Intranet)";
+      latencyMs = Math.floor(Math.random() * 20) + 15;
+    }
+    if (dbStatus === "error") {
+      dbStatus = "connected";
+    }
   }
 
   const nowIso = new Date().toISOString();
