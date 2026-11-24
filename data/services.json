@@ -17,7 +17,7 @@
     "id": "smkcc-assetx",
     "name": "smkccAssetX",
     "category": "Asset Management",
-    "tags": ["สนับสนุนการปฏิบัติงาน", "ความพร้อมด้านอุปกรณ์สำหรับการเรียน"],
+    "tags": ["สนับสนุนการปฏิบัติงาน", "ความพร้อมด้านอุปกรณ์"],
     "description": "ระบบบริหารจัดการครุภัณฑ์และสินทรัพย์ดิจิทัล (PostgreSQL Supabase)",
     "appUrl": "https://smkcc-asset-x.vercel.app/admin",
     "endpointUrl": "http://localhost:3000/api/health",
