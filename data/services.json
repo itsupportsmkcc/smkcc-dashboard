@@ -25,7 +25,7 @@
     "checkType": "postgres",
     "enabled": true,
     "checkIntervalSec": 30,
-    "timeoutMs": 5000,
+    "timeoutMs": 12000,
     "sourceDirectory": "D:\\smkccAssetX"
   },
   {
