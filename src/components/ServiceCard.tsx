@@ -62,7 +62,7 @@ export function ServiceCard({
             </div>
 
             {/* Topology & Strategic Tags */}
-            <div className="flex flex-wrap items-center gap-1.5 mb-1.5 min-h-[22px]">
+            <div className="flex items-center gap-1.5 mb-1.5 h-[24px] overflow-hidden flex-nowrap">
               {service.infra && (
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-cyan-950/60 text-cyan-300 border border-cyan-800/50 flex items-center gap-1 shrink-0">
                   <Cpu className="w-2.5 h-2.5 text-cyan-400" />
@@ -73,7 +73,7 @@ export function ServiceCard({
                 service.tags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/50 shrink-0"
+                    className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/50 shrink-0 truncate max-w-[140px]"
                   >
                     {tag}
                   </span>
@@ -178,14 +178,15 @@ export function ServiceCard({
             {/* Database indicator */}
             {snapshot?.dbStatus && snapshot.dbStatus !== "skipped" && (
               <span
-                className={`text-[10px] px-1.5 py-0.5 rounded border flex items-center gap-1 ${
+                title={snapshot.dbStatus === "connected" ? "ฐานข้อมูลเชื่อมต่อสมบูรณ์ (Connected)" : "ฐานข้อมูลขัดข้อง (Disconnected)"}
+                className={`text-[10px] px-1.5 py-0.5 rounded border flex items-center gap-1 shrink-0 ${
                   snapshot.dbStatus === "connected"
                     ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/40"
                     : "bg-red-950/40 text-red-300 border-red-800/40"
                 }`}
               >
-                <Database className="w-2.5 h-2.5" />
-                {snapshot.dbStatus === "connected" ? "DB เชื่อมต่อได้" : "DB ขัดข้อง"}
+                <Database className="w-2.5 h-2.5 text-emerald-400" />
+                {snapshot.dbStatus === "connected" ? "DB OK" : "DB FAIL"}
               </span>
             )}
 
