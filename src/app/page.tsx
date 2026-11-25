@@ -11,6 +11,8 @@ import { ExecutiveDashboardData } from "@/lib/analytics";
 import { Header } from "@/components/Header";
 import { IncidentBanner } from "@/components/IncidentBanner";
 import { MetricsCards } from "@/components/MetricsCards";
+import { NocMasterTelemetry } from "@/components/NocMasterTelemetry";
+import { NocLiveTerminal } from "@/components/NocLiveTerminal";
 import { ServiceCard } from "@/components/ServiceCard";
 import { SettingsModal } from "@/components/SettingsModal";
 import { ExecutiveOverviewCards } from "@/components/analytics/ExecutiveOverviewCards";
@@ -232,7 +234,7 @@ export default function DashboardPage() {
   });
 
   return (
-    <div className={`min-h-screen flex flex-col bg-[#070b14] text-slate-100 ${isTvMode ? "tv-mode" : ""} ${isKiosk ? "p-1 sm:p-2" : ""}`}>
+    <div className={`min-h-screen flex flex-col bg-[#050811] cyber-grid text-slate-100 ${isTvMode ? "tv-mode" : ""} ${isKiosk ? "p-1 sm:p-2" : ""}`}>
       {/* Header with Dual Tab Switcher */}
       <Header
         overview={overview}
@@ -320,24 +322,42 @@ export default function DashboardPage() {
         {activeTab === "noc" && (
           <div className="space-y-6 animate-in fade-in duration-300">
             {/* Section Sub-header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border/40">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-cyan-500/20">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                  <Server className="w-5 h-5" />
+                <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-lg shadow-cyan-950/40">
+                  <Server className="w-5 h-5 animate-pulse" />
                 </div>
                 <div>
-                  <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2">
-                    ศูนย์มอนิเตอร์สถานะระบบ & โครงข่าย (SMKCC Central NOC)
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    ติดตามความพร้อมใช้งาน (Uptime), Latency (ms), และการทำงานของฐานข้อมูลทั้ง {services.length || 8} ระบบ
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                      ศูนย์มอนิเตอร์สถานะระบบ & โครงข่าย (SMKCC Central NOC)
+                    </h2>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-500/30">
+                      TIER-3 HYBRID CLOUD
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                      24/7 LIVE
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    ศูนย์ควบคุมตรวจจับความพร้อมใช้งาน (Uptime), เฝ้าระวัง Latency RTT และโครงสร้างพื้นฐาน 8 ระบบสถาบัน
                   </p>
                 </div>
               </div>
+
+              <div className="flex items-center gap-2 self-start md:self-auto font-mono text-[11px] text-slate-400">
+                <span className="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-800 text-cyan-300">
+                  UniNet Fiber 10G
+                </span>
+                <span className="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-800 text-emerald-300">
+                  LINE Alert Engine
+                </span>
+              </div>
             </div>
 
-            {/* Top 4 Metrics Cards for NOC */}
-            <MetricsCards overview={overview} />
+            {/* Master Telemetry Bar for Enterprise NOC */}
+            <NocMasterTelemetry overview={overview} />
 
             {/* Filters Bar: Category & Strategic Tags */}
             <div className="flex flex-col gap-2.5 border-b border-border/60 pb-3">
@@ -397,6 +417,9 @@ export default function DashboardPage() {
                 />
               ))}
             </div>
+
+            {/* Live Telemetry & Audit Stream Terminal */}
+            <NocLiveTerminal />
           </div>
         )}
       </main>

@@ -8,6 +8,7 @@ import {
   Database,
   Globe,
   Radio,
+  Cpu,
 } from "lucide-react";
 import { formatLatency, formatUptimePercent, timeAgo } from "@/lib/utils";
 
@@ -38,16 +39,16 @@ export function ServiceCard({
 
   return (
     <div
-      className={`rounded-xl border bg-card/50 backdrop-blur-sm p-4 sm:p-5 transition-all duration-200 hover:border-border/80 hover:bg-card/70 relative overflow-hidden group flex flex-col justify-between h-full ${
+      className={`rounded-xl border bg-[#0b1322]/80 backdrop-blur-md p-4 sm:p-5 transition-all duration-300 hover:border-cyan-500/50 hover:bg-[#0e172a]/90 relative overflow-hidden group flex flex-col justify-between h-full hud-corner shadow-md shadow-black/30 ${
         status === "down"
           ? "border-red-800/60 glow-red"
           : status === "degraded"
           ? "border-amber-800/60 glow-yellow"
-          : "border-border/60"
+          : "border-slate-800/80"
       }`}
     >
-      {/* Top Section: Title, Category, Tags & Description */}
-      <div className="flex-1 flex flex-col justify-start min-h-[92px]">
+      {/* Top Section: Title, Category, Topology, Tags & Description */}
+      <div className="flex-1 flex flex-col justify-start min-h-[96px]">
         {/* Top Row: Service Name, Category & Actions */}
         <div className="flex items-start justify-between gap-2 mb-1.5">
           <div className="flex-1 min-w-0">
@@ -60,22 +61,27 @@ export function ServiceCard({
               </span>
             </div>
 
-            {/* Strategic Tags */}
-            {service.tags && service.tags.length > 0 && (
-              <div className="flex flex-wrap items-center gap-1.5 mb-1.5 min-h-[22px]">
-                {service.tags.map((tag, idx) => (
+            {/* Topology & Strategic Tags */}
+            <div className="flex flex-wrap items-center gap-1.5 mb-1.5 min-h-[22px]">
+              {service.infra && (
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-cyan-950/60 text-cyan-300 border border-cyan-800/50 flex items-center gap-1 shrink-0">
+                  <Cpu className="w-2.5 h-2.5 text-cyan-400" />
+                  {service.infra}
+                </span>
+              )}
+              {service.tags &&
+                service.tags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800/70 text-slate-300 border border-slate-700/40 shrink-0"
+                    className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-800/80 text-slate-300 border border-slate-700/50 shrink-0"
                   >
                     {tag}
                   </span>
                 ))}
-              </div>
-            )}
+            </div>
 
             {/* Description */}
-            <p className="text-xs text-muted-foreground line-clamp-1" title={service.description}>
+            <p className="text-xs text-slate-400 line-clamp-1" title={service.description}>
               {service.description}
             </p>
           </div>
@@ -111,7 +117,7 @@ export function ServiceCard({
       {/* Bottom Section: Status Pill & 30-Day Uptime Bar (Anchored in the exact same horizontal plane) */}
       <div className="mt-auto pt-2">
         {/* Middle Row: Status Badge, Latency & Check Details */}
-        <div className="flex items-center justify-between gap-2 py-2 px-3 rounded-lg bg-secondary/30 border border-border/40 mb-3 min-h-[42px] h-[42px]">
+        <div className="flex items-center justify-between gap-2 py-2 px-3 rounded-lg bg-slate-900/80 border border-slate-800 mb-3 min-h-[42px] h-[42px]">
           {/* Status indicator */}
           <div className="flex items-center gap-2 shrink-0">
             <span className="relative flex h-2.5 w-2.5">
@@ -154,11 +160,20 @@ export function ServiceCard({
 
           {/* Latency & Badges */}
           <div className="flex items-center gap-2 font-mono text-xs shrink-0">
-            {/* Latency */}
-            <span className="text-muted-foreground flex items-center gap-1">
+            {/* Latency Sparkline */}
+            <div className="flex items-center gap-1.5 text-muted-foreground bg-slate-950/80 px-2 py-0.5 rounded border border-slate-800">
               <Radio className="w-3 h-3 text-cyan-400" />
+              <svg className="w-6 h-2.5 text-cyan-400/80 hidden sm:block" viewBox="0 0 24 10" fill="none">
+                <path
+                  d="M0,5 L5,5 L8,1 L11,9 L14,2 L17,7 L20,5 L24,5"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
               <strong className="text-foreground">{formatLatency(latency)}</strong>
-            </span>
+            </div>
 
             {/* Database indicator */}
             {snapshot?.dbStatus && snapshot.dbStatus !== "skipped" && (
@@ -187,7 +202,9 @@ export function ServiceCard({
         {/* 30-Day Uptime History Bar */}
         <div>
           <div className="flex items-center justify-between text-[11px] text-muted-foreground mb-1.5">
-            <span>ประวัติ Uptime 30 วัน</span>
+            <span className="font-mono text-slate-400 text-[10px] uppercase tracking-wider">
+              Uptime 30D Heatmap
+            </span>
             <div className="flex items-center gap-2">
               {hoveredBar ? (
                 <span className="font-mono text-foreground font-semibold">
@@ -202,7 +219,7 @@ export function ServiceCard({
           </div>
 
           {/* 30 Bar Segments */}
-          <div className="flex items-center gap-[3px] h-6 bg-secondary/20 p-1 rounded-md border border-border/30">
+          <div className="flex items-center gap-[3px] h-6 bg-slate-950/60 p-1 rounded-md border border-slate-800/60">
             {history30d.map((bar, idx) => (
               <div
                 key={idx}
@@ -210,7 +227,7 @@ export function ServiceCard({
                 onMouseLeave={() => setHoveredBar(null)}
                 className={`flex-1 h-full rounded-[2px] transition-all cursor-pointer hover:scale-y-125 ${
                   bar.status === "operational"
-                    ? "bg-emerald-500/80 hover:bg-emerald-400"
+                    ? "bg-emerald-500/80 hover:bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.3)]"
                     : bar.status === "degraded"
                     ? "bg-amber-500 hover:bg-amber-400"
                     : "bg-red-500 hover:bg-red-400"
@@ -222,9 +239,9 @@ export function ServiceCard({
 
           {/* Bottom row: 30 days ago vs today */}
           <div className="flex justify-between items-center text-[10px] text-muted-foreground/60 mt-1 font-mono">
-            <span>30 วันก่อน</span>
-            <span className="text-muted-foreground">อัปเดต {lastChecked}</span>
-            <span>วันนี้</span>
+            <span>30D AGO</span>
+            <span className="text-muted-foreground">POLL {lastChecked}</span>
+            <span>TODAY</span>
           </div>
         </div>
       </div>

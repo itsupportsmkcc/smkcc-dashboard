@@ -15,6 +15,8 @@ export interface ServiceDefinition {
   timeoutMs: number;
   sourceDirectory?: string;
   tags?: string[];
+  infra?: string;
+  region?: string;
 }
 
 export interface ServiceHealthSnapshot {

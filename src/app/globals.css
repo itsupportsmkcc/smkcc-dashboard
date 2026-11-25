@@ -108,3 +108,59 @@ body {
   padding: 1rem 1.15rem !important;
 }
 
+/* -------------------------------------------------------------
+ * Cyber Command Center & High-Tech NOC HUD
+ * ------------------------------------------------------------- */
+.cyber-grid {
+  background-image: 
+    linear-gradient(to right, rgba(14, 165, 233, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(14, 165, 233, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.radar-sweep {
+  animation: radar-sweep 4s linear infinite;
+}
+
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.hud-corner {
+  position: relative;
+}
+.hud-corner::before,
+.hud-corner::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-color: rgba(56, 189, 248, 0.4);
+  pointer-events: none;
+}
+.hud-corner::before {
+  top: 0;
+  left: 0;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+.hud-corner::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+.pulse-sparkline {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: dash 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes dash {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+
