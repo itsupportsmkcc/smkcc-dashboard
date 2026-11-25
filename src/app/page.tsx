@@ -52,8 +52,24 @@ export default function DashboardPage() {
   const [countdown, setCountdown] = useState(30);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedTag, setSelectedTag] = useState<string>("all");
+  const [isSimulatingAlert, setIsSimulatingAlert] = useState(false);
 
   const prevDownCountRef = useRef<number>(0);
+
+  const toggleSimulateAlert = () => {
+    setIsSimulatingAlert(prev => {
+      const next = !prev;
+      if (next) {
+        playAlertTone("critical");
+      }
+      return next;
+    });
+  };
+
+  const isEmergencyActive =
+    isSimulatingAlert ||
+    (overview?.downCount || 0) > 0 ||
+    overview?.overallStatus === "critical_outage";
 
   // Load sound & TV mode settings from localStorage or URL query (?tv=true)
   useEffect(() => {
@@ -250,6 +266,8 @@ export default function DashboardPage() {
         onRefreshAll={() => fetchAllData(true)}
         isRefreshing={isRefreshing}
         countdown={countdown}
+        isSimulatingAlert={isSimulatingAlert}
+        onToggleSimulateAlert={toggleSimulateAlert}
       />
 
       {/* Main Content Area */}
@@ -447,7 +465,39 @@ export default function DashboardPage() {
         onSaveService={handleSaveService}
         onDeleteService={handleDeleteService}
         onTriggerAutoDiscovery={handleTriggerAutoDiscovery}
+        isSimulatingAlert={isSimulatingAlert}
+        onToggleSimulateAlert={toggleSimulateAlert}
       />
+
+      {/* Red Alert Perimeter Vignette Frame */}
+      {isEmergencyActive && (
+        <div className="fixed inset-0 pointer-events-none z-[9999] emergency-vignette flex flex-col justify-between p-3 sm:p-5">
+          {/* Top Floating Alert Banner */}
+          <div className="flex items-center justify-between w-full max-w-7xl mx-auto pointer-events-auto">
+            <div className="flex items-center gap-2 bg-red-950/95 border border-red-500/80 px-4 py-2 rounded-xl shadow-[0_0_25px_rgba(239,68,68,0.7)] backdrop-blur-md">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
+              <span className="font-mono text-xs font-black text-red-100 tracking-wider">
+                🚨 CRITICAL DEFCON-1 ALERT // ตรวจพบระบบขัดข้องฉุกเฉิน
+              </span>
+            </div>
+
+            {isSimulatingAlert && (
+              <button
+                onClick={() => setIsSimulatingAlert(false)}
+                className="flex items-center gap-1.5 bg-black/85 hover:bg-red-950 border border-red-500 text-red-200 text-xs px-3.5 py-2 rounded-xl shadow-lg transition-all"
+              >
+                <span>✕ ปิดโหมดจำลองกรอบแดง</span>
+              </button>
+            )}
+          </div>
+
+          {/* 4 Corner Tech Brackets (Cyber HUD) */}
+          <div className="absolute top-2 left-2 w-8 h-8 border-t-[3px] border-l-[3px] border-red-500 pointer-events-none" />
+          <div className="absolute top-2 right-2 w-8 h-8 border-t-[3px] border-r-[3px] border-red-500 pointer-events-none" />
+          <div className="absolute bottom-2 left-2 w-8 h-8 border-b-[3px] border-l-[3px] border-red-500 pointer-events-none" />
+          <div className="absolute bottom-2 right-2 w-8 h-8 border-b-[3px] border-r-[3px] border-red-500 pointer-events-none" />
+        </div>
+      )}
     </div>
   );
 }

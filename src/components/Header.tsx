@@ -34,6 +34,8 @@ interface HeaderProps {
   onRefreshAll: () => void;
   isRefreshing: boolean;
   countdown: number;
+  isSimulatingAlert?: boolean;
+  onToggleSimulateAlert?: () => void;
 }
 
 export function Header({
@@ -50,6 +52,8 @@ export function Header({
   onRefreshAll,
   isRefreshing,
   countdown,
+  isSimulatingAlert,
+  onToggleSimulateAlert,
 }: HeaderProps) {
   const [timeStr, setTimeStr] = useState<string>("");
 
@@ -176,6 +180,21 @@ export function Header({
           >
             {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
           </button>
+
+          {/* Red Alert Simulation Toggle */}
+          {onToggleSimulateAlert && (
+            <button
+              onClick={onToggleSimulateAlert}
+              title={isSimulatingAlert ? "ปิดโหมดจำลองกรอบแดงเตือนภัย" : "ทดสอบเปิดกรอบแดงกระพริบ (Red Alert Mode)"}
+              className={`p-2.5 rounded-xl border transition-all ${
+                isSimulatingAlert
+                  ? "bg-red-600 border-red-400 text-white shadow-[0_0_15px_rgba(239,68,68,0.7)] animate-pulse"
+                  : "bg-[#131b2e] border-border text-slate-400 hover:text-red-400 hover:border-red-900/50"
+              }`}
+            >
+              <AlertTriangle className={`w-4 h-4 ${isSimulatingAlert ? "text-white" : "text-red-400"}`} />
+            </button>
+          )}
 
           {/* Refresh Button with Countdown */}
           <button

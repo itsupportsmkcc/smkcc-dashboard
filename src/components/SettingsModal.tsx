@@ -25,6 +25,8 @@ interface SettingsModalProps {
   onSaveService: (service: ServiceDefinition) => Promise<void>;
   onDeleteService: (id: string) => Promise<void>;
   onTriggerAutoDiscovery: () => Promise<void>;
+  isSimulatingAlert?: boolean;
+  onToggleSimulateAlert?: () => void;
 }
 
 export function SettingsModal({
@@ -34,6 +36,8 @@ export function SettingsModal({
   onSaveService,
   onDeleteService,
   onTriggerAutoDiscovery,
+  isSimulatingAlert,
+  onToggleSimulateAlert,
 }: SettingsModalProps) {
   const [selectedService, setSelectedService] = useState<ServiceDefinition | null>(
     services[0] || null
@@ -212,12 +216,19 @@ export function SettingsModal({
 
               <button
                 type="button"
-                onClick={() => playAlertTone("critical")}
-                className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-red-950/40 hover:bg-red-900/60 border border-red-800/40 text-xs text-red-300 font-medium transition-all"
-                title="กดเพื่อทดสอบฟังเสียงไซเรนเตือนภัยระดับวิกฤต"
+                onClick={() => {
+                  playAlertTone("critical");
+                  if (onToggleSimulateAlert) onToggleSimulateAlert();
+                }}
+                className={`w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border text-xs font-semibold transition-all ${
+                  isSimulatingAlert
+                    ? "bg-red-600 text-white border-red-400 shadow-[0_0_15px_rgba(239,68,68,0.7)] animate-pulse"
+                    : "bg-red-950/40 hover:bg-red-900/60 border-red-800/40 text-red-300"
+                }`}
+                title="กดเพื่อทดสอบกรอบแดงกระพริบและเสียงไซเรนเตือนภัยระดับวิกฤต"
               >
-                <Volume2 className="w-3.5 h-3.5 text-red-400" />
-                <span>ทดลองฟังเสียง Critical Alarm</span>
+                <Volume2 className="w-3.5 h-3.5" />
+                <span>{isSimulatingAlert ? "🚨 ปิดโหมดจำลองกรอบแดง" : "🚨 ทดลองฟังเสียงไซเรน + กรอบแดงกระพริบ"}</span>
               </button>
               {lineResult && (
                 <div className="text-[11px] text-center text-emerald-400 font-mono py-1">
