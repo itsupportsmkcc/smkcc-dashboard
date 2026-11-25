@@ -105,7 +105,7 @@
     "id": "smkcc-student-care",
     "name": "Student Care (ระบบดูแลนักศึกษา)",
     "category": "Academic",
-    "tags": ["สนับสนุนการศึกษา"],
+    "tags": ["สนับสนุนการศึกษา", "โครงการวิจัยนำร่อง (R&D)"],
     "description": "ระบบรับฟังและดูแลช่วยเหลือนักศึกษาเชิงรุก เพื่อลดอัตราการออกกลางคัน เชื่อมต่อ LINE OA",
     "appUrl": "http://localhost:3000/dashboard",
     "endpointUrl": "http://localhost:3000",
