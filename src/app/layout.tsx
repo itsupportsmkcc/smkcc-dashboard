@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SMKCC Unified Dashboard • วิทยาลัยชุมชนสมุทรสาคร",
+  title: "SMKCC Nexus • วิทยาลัยชุมชนสมุทรสาคร",
   description: "ศูนย์มอนิเตอร์ความพร้อมใช้งานระบบสารสนเทศ ฐานข้อมูล และโครงข่าย วิทยาลัยชุมชนสมุทรสาคร",
   icons: {
     icon: "/logo-smkcc.png",

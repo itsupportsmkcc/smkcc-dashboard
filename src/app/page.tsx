@@ -459,7 +459,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-sm" />
             <span className="font-medium text-slate-300">
-              SMKCC Unified Command Dashboard • วิทยาลัยชุมชนสมุทรสาคร
+              SMKCC Nexus • วิทยาลัยชุมชนสมุทรสาคร
             </span>
           </div>
           <div className="font-mono text-[11px] text-slate-500">

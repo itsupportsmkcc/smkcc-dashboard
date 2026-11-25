@@ -89,8 +89,11 @@ export function Header({
           </div>
 
           <div>
-            <h1 className="text-base sm:text-lg font-bold tracking-tight text-white whitespace-nowrap">
-              SMKCC Unified Dashboard
+            <h1 className="text-base sm:text-lg font-bold tracking-tight text-white whitespace-nowrap flex items-center gap-2">
+              <span>SMKCC Nexus</span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-normal">
+                v2.0
+              </span>
             </h1>
             <p className="text-[11px] text-slate-400 font-medium whitespace-nowrap">
               วิทยาลัยชุมชนสมุทรสาคร
