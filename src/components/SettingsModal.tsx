@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { ServiceDefinition } from "@/lib/types";
+import { playAlertTone } from "@/lib/audio";
 import {
   X,
   Plus,
@@ -14,6 +15,7 @@ import {
   Globe,
   Radio,
   BellRing,
+  Volume2,
 } from "lucide-react";
 
 interface SettingsModalProps {
@@ -206,6 +208,16 @@ export function SettingsModal({
               >
                 <BellRing className="w-3.5 h-3.5 text-emerald-400" />
                 <span>{isTestingLine ? "กำลังส่ง..." : "ทดสอบส่งแจ้งเตือนเข้า LINE"}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => playAlertTone("critical")}
+                className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-red-950/40 hover:bg-red-900/60 border border-red-800/40 text-xs text-red-300 font-medium transition-all"
+                title="กดเพื่อทดสอบฟังเสียงไซเรนเตือนภัยระดับวิกฤต"
+              >
+                <Volume2 className="w-3.5 h-3.5 text-red-400" />
+                <span>ทดลองฟังเสียง Critical Alarm</span>
               </button>
               {lineResult && (
                 <div className="text-[11px] text-center text-emerald-400 font-mono py-1">
