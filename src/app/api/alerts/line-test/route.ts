@@ -24,13 +24,13 @@ export async function POST() {
     `🔗 เข้าสู่แดชบอร์ด: https://smkcc-dashboard.vercel.app`,
   ].join("\n");
 
-  const success = await sendLinePushMessage(message);
+  const res = await sendLinePushMessage(message);
 
-  if (success) {
+  if (res.success) {
     return NextResponse.json({ ok: true, message: "ส่งข้อความทดสอบเข้า LINE สำเร็จแล้ว" });
   } else {
     return NextResponse.json(
-      { ok: false, error: "ไม่สามารถส่งข้อความได้ กรุณาตรวจสอบการตั้งค่า LINE Token หรือ Network" },
+      { ok: false, error: res.error || "ไม่สามารถส่งข้อความได้ กรุณาตรวจสอบการเชื่อมต่อ" },
       { status: 500 }
     );
   }

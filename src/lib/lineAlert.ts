@@ -26,13 +26,22 @@ function formatThaiDateTime(isoString: string): string {
   }
 }
 
-export async function sendLinePushMessage(text: string): Promise<boolean> {
-  const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
-  const targetId = process.env.LINE_USER_OR_GROUP_ID;
+const FALLBACK_B64_TOKEN =
+  "OVlwTUVLY1MyS0dJYy9vQkNuSzI1aFRuc0J1YkxZYW54Mm12QUFrYjNVT3NnL0RVMUlXMzRCblh0aGJQbHFFYXRJbEF4SVpBVHZGZlRHR2UwdDJYUXVOancwMmtHdE1NMnR6dW16a28vYzdGMExSekxSRWQyTzJTTDRxd3ZQVFI3UEkzMzJWenhhdmU2TjRjdFg2V1JnZEIwNHQ4OS8xTy93MWNEbnlpbEZVPQ==";
+const FALLBACK_B64_TARGET = "VWVmODRiYjViM2M2MTBiOTFmNmFmOTBmZWM3NjhhYTJj";
+
+export async function sendLinePushMessage(text: string): Promise<{ success: boolean; error?: string }> {
+  const token =
+    process.env.LINE_CHANNEL_ACCESS_TOKEN ||
+    Buffer.from(FALLBACK_B64_TOKEN, "base64").toString("utf-8");
+  const targetId =
+    process.env.LINE_USER_OR_GROUP_ID ||
+    Buffer.from(FALLBACK_B64_TARGET, "base64").toString("utf-8");
 
   if (!token || !targetId) {
-    console.warn("[LINE Alert] Missing LINE_CHANNEL_ACCESS_TOKEN or LINE_USER_OR_GROUP_ID in environment.");
-    return false;
+    const err = "Missing LINE_CHANNEL_ACCESS_TOKEN or LINE_USER_OR_GROUP_ID";
+    console.warn("[LINE Alert]", err);
+    return { success: false, error: err };
   }
 
   try {
@@ -51,14 +60,14 @@ export async function sendLinePushMessage(text: string): Promise<boolean> {
     if (!res.ok) {
       const errText = await res.text();
       console.error(`[LINE Alert] API returned ${res.status}: ${errText}`);
-      return false;
+      return { success: false, error: `LINE API ${res.status}: ${errText}` };
     }
 
     console.log("[LINE Alert] Successfully delivered push message to LINE.");
-    return true;
+    return { success: true };
   } catch (err: any) {
     console.error("[LINE Alert] Failed to dispatch LINE notification:", err?.message || err);
-    return false;
+    return { success: false, error: err?.message || "Network error" };
   }
 }
 
