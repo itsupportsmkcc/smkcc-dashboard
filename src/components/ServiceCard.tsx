@@ -7,8 +7,7 @@ import {
   RefreshCw,
   Database,
   Globe,
-  Radio,
-  Cpu,
+  Server,
 } from "lucide-react";
 import { formatLatency, formatUptimePercent, timeAgo } from "@/lib/utils";
 
@@ -65,7 +64,7 @@ export function ServiceCard({
             <div className="flex items-center gap-1.5 mb-1.5 h-[24px] overflow-hidden flex-nowrap">
               {service.infra && (
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-cyan-950/60 text-cyan-300 border border-cyan-800/50 flex items-center gap-1 shrink-0">
-                  <Cpu className="w-2.5 h-2.5 text-cyan-400" />
+                  <Server className="w-2.5 h-2.5 text-cyan-400" />
                   {service.infra}
                 </span>
               )}
@@ -162,7 +161,7 @@ export function ServiceCard({
           <div className="flex items-center gap-2 font-mono text-xs shrink-0">
             {/* Latency Sparkline */}
             <div className="flex items-center gap-1.5 text-muted-foreground bg-slate-950/80 px-2 py-0.5 rounded border border-slate-800">
-              <Radio className="w-3 h-3 text-cyan-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shrink-0" />
               <svg className="w-6 h-2.5 text-cyan-400/80 hidden sm:block" viewBox="0 0 24 10" fill="none">
                 <path
                   d="M0,5 L5,5 L8,1 L11,9 L14,2 L17,7 L20,5 L24,5"

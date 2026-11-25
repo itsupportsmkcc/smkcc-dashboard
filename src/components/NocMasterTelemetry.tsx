@@ -5,13 +5,10 @@ import { SystemOverview } from "@/lib/types";
 import {
   Server,
   Activity,
-  Zap,
   CheckCircle2,
   AlertTriangle,
   ShieldCheck,
-  Radio,
-  Globe2,
-  Cpu,
+  Network,
 } from "lucide-react";
 import { formatLatency } from "@/lib/utils";
 
@@ -88,7 +85,7 @@ export function NocMasterTelemetry({ overview }: NocMasterTelemetryProps) {
       <div className="p-4 rounded-xl bg-[#0b1322]/85 border border-cyan-500/25 backdrop-blur-md relative overflow-hidden group hover:border-cyan-400/50 transition-all hud-corner shadow-lg shadow-black/40">
         <div className="flex items-center justify-between text-slate-400 mb-2.5">
           <div className="flex items-center gap-2">
-            <Zap className="w-4 h-4 text-cyan-400" />
+            <Activity className="w-4 h-4 text-cyan-400" />
             <span className="text-xs font-mono uppercase tracking-wider text-cyan-300 font-semibold">
               Network Telemetry
             </span>
@@ -103,8 +100,8 @@ export function NocMasterTelemetry({ overview }: NocMasterTelemetryProps) {
           <div className="text-2xl sm:text-3xl font-black text-white font-mono tracking-tight">
             {formatLatency(avgLatency)}
           </div>
-          <span className="text-[11px] font-medium text-cyan-300">
-            {avgLatency < 250 ? "⚡ Response Fast" : "Normal Response"}
+          <span className="text-[11px] font-medium text-cyan-300 font-mono">
+            {avgLatency < 250 ? "Fast Response" : "Normal Response"}
           </span>
         </div>
 
@@ -168,7 +165,7 @@ export function NocMasterTelemetry({ overview }: NocMasterTelemetryProps) {
       <div className="p-4 rounded-xl bg-[#0b1322]/85 border border-slate-700/40 backdrop-blur-md relative overflow-hidden group hover:border-cyan-500/40 transition-all hud-corner shadow-lg shadow-black/40">
         <div className="flex items-center justify-between text-slate-400 mb-2.5">
           <div className="flex items-center gap-2">
-            <Globe2 className="w-4 h-4 text-emerald-400" />
+            <Network className="w-4 h-4 text-emerald-400" />
             <span className="text-xs font-mono uppercase tracking-wider text-slate-300 font-semibold">
               Hybrid Topology
             </span>

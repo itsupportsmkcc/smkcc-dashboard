@@ -26,13 +26,9 @@ import { playAlertTone, startContinuousSiren, stopContinuousSiren } from "@/lib/
 import {
   Activity,
   Server,
-  Layers,
   Filter,
   BarChart3,
-  Calendar,
-  Sparkles,
-  GraduationCap,
-  Boxes,
+  Database,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -319,8 +315,8 @@ export default function DashboardPage() {
 
               <div className="flex items-center gap-2 self-start sm:self-center">
                 <span className="text-[11px] px-3 py-1 rounded-full bg-slate-800/50 text-slate-300 border border-slate-700/40 flex items-center gap-1.5 font-mono shadow-sm">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
-                  ดึงข้อมูลสดจากฐานข้อมูลจริง: {analyticsData?.lastUpdated ? new Date(analyticsData.lastUpdated).toLocaleTimeString("th-TH") : "กำลังโหลด..."}
+                  <Database className="w-3.5 h-3.5 text-emerald-400" />
+                  อัปเดตล่าสุด: {analyticsData?.lastUpdated ? new Date(analyticsData.lastUpdated).toLocaleTimeString("th-TH") : "กำลังโหลด..."}
                 </span>
               </div>
             </div>
@@ -361,23 +357,20 @@ export default function DashboardPage() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-cyan-500/20">
               <div className="flex items-center gap-3">
                 <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-lg shadow-cyan-950/40">
-                  <Server className="w-5 h-5 animate-pulse" />
+                  <Server className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2.5 flex-wrap">
-                    <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                    <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
                       ศูนย์มอนิเตอร์สถานะระบบ & โครงข่าย (SMKCC Central NOC)
                     </h2>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-500/30">
-                      TIER-3 HYBRID CLOUD
-                    </span>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                      24/7 LIVE
+                      24/7 Monitoring
                     </span>
                   </div>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    ศูนย์ควบคุมตรวจจับความพร้อมใช้งาน (Uptime), เฝ้าระวัง Latency RTT และโครงสร้างพื้นฐาน 8 ระบบสถาบัน
+                    ตรวจสอบความพร้อมใช้งาน (Uptime), Latency และโครงสร้างพื้นฐาน 8 ระบบ
                   </p>
                 </div>
               </div>

@@ -14,7 +14,7 @@ import {
   BookOpen,
   Brain,
   CheckCircle2,
-  Sparkles,
+  FlaskConical,
 } from "lucide-react";
 
 interface StudentCareWidgetProps {
@@ -91,7 +91,7 @@ export function StudentCareWidget({ studentCare }: StudentCareWidgetProps) {
                   สนับสนุนการศึกษา
                 </span>
                 <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 flex items-center gap-1">
-                  <Sparkles className="w-2.5 h-2.5 text-purple-400" /> R&D Pilot Phase
+                  <FlaskConical className="w-2.5 h-2.5 text-purple-400" /> R&D Pilot Phase
                 </span>
               </div>
               <p className="text-xs text-slate-400">
@@ -115,7 +115,7 @@ export function StudentCareWidget({ studentCare }: StudentCareWidgetProps) {
         {/* Research Pilot Notice */}
         <div className="p-2.5 px-3 rounded-xl bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900/40 border border-purple-500/30 mb-3.5 flex items-start gap-2.5 shadow-sm">
           <div className="p-1 rounded-lg bg-purple-500/15 text-purple-300 shrink-0 mt-0.5">
-            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+            <FlaskConical className="w-3.5 h-3.5 text-purple-400" />
           </div>
           <div className="text-[11px] leading-relaxed text-slate-300">
             <span className="font-semibold text-purple-200">โครงการวิจัยพัฒนานวัตกรรมนำร่อง (R&D Pilot Phase):</span>{" "}
