@@ -53,3 +53,26 @@ export function playAlertTone(type: "critical" | "warning" | "success" = "critic
     console.warn("AudioContext not permitted or supported yet:", err);
   }
 }
+
+// Continuous looping siren controller for Critical NOC alarms
+let sirenInterval: any = null;
+
+export function startContinuousSiren() {
+  if (typeof window === "undefined") return;
+  stopContinuousSiren();
+  playAlertTone("critical");
+  sirenInterval = setInterval(() => {
+    playAlertTone("critical");
+  }, 1200);
+}
+
+export function stopContinuousSiren() {
+  if (sirenInterval) {
+    clearInterval(sirenInterval);
+    sirenInterval = null;
+  }
+}
+
+export function isContinuousSirenPlaying(): boolean {
+  return sirenInterval !== null;
+}

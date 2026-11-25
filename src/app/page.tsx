@@ -22,7 +22,7 @@ import { StudentCareWidget } from "@/components/analytics/StudentCareWidget";
 import { AssetWidget } from "@/components/analytics/AssetWidget";
 import { WatsaduWidget } from "@/components/analytics/WatsaduWidget";
 import { HelpdeskAndNetworkWidget } from "@/components/analytics/HelpdeskAndNetworkWidget";
-import { playAlertTone } from "@/lib/audio";
+import { playAlertTone, startContinuousSiren, stopContinuousSiren } from "@/lib/audio";
 import {
   Activity,
   Server,
@@ -53,23 +53,38 @@ export default function DashboardPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedTag, setSelectedTag] = useState<string>("all");
   const [isSimulatingAlert, setIsSimulatingAlert] = useState(false);
+  const [isAlertSilenced, setIsAlertSilenced] = useState(false);
 
   const prevDownCountRef = useRef<number>(0);
 
+  const isEmergencyActive =
+    (isSimulatingAlert || ((overview?.downCount || 0) > 0 || overview?.overallStatus === "critical_outage")) &&
+    !isAlertSilenced;
+
   const toggleSimulateAlert = () => {
-    setIsSimulatingAlert(prev => {
-      const next = !prev;
-      if (next) {
-        playAlertTone("critical");
-      }
-      return next;
-    });
+    if (isEmergencyActive) {
+      setIsSimulatingAlert(false);
+      setIsAlertSilenced(true);
+      stopContinuousSiren();
+    } else {
+      setIsSimulatingAlert(true);
+      setIsAlertSilenced(false);
+      startContinuousSiren();
+    }
   };
 
-  const isEmergencyActive =
-    isSimulatingAlert ||
-    (overview?.downCount || 0) > 0 ||
-    overview?.overallStatus === "critical_outage";
+  const handleSilenceAlert = () => {
+    setIsSimulatingAlert(false);
+    setIsAlertSilenced(true);
+    stopContinuousSiren();
+  };
+
+  // Cleanup audio loop on unmount
+  useEffect(() => {
+    return () => {
+      stopContinuousSiren();
+    };
+  }, []);
 
   // Load sound & TV mode settings from localStorage or URL query (?tv=true)
   useEffect(() => {
@@ -139,7 +154,10 @@ export default function DashboardPage() {
 
         const currentDown = data.overview?.downCount || 0;
         if (currentDown > prevDownCountRef.current && soundEnabled) {
-          playAlertTone("critical");
+          setIsAlertSilenced(false);
+          startContinuousSiren();
+        } else if (currentDown === 0 && !isSimulatingAlert) {
+          stopContinuousSiren();
         }
         prevDownCountRef.current = currentDown;
       }
@@ -266,7 +284,7 @@ export default function DashboardPage() {
         onRefreshAll={() => fetchAllData(true)}
         isRefreshing={isRefreshing}
         countdown={countdown}
-        isSimulatingAlert={isSimulatingAlert}
+        isSimulatingAlert={isEmergencyActive}
         onToggleSimulateAlert={toggleSimulateAlert}
       />
 
@@ -465,7 +483,7 @@ export default function DashboardPage() {
         onSaveService={handleSaveService}
         onDeleteService={handleDeleteService}
         onTriggerAutoDiscovery={handleTriggerAutoDiscovery}
-        isSimulatingAlert={isSimulatingAlert}
+        isSimulatingAlert={isEmergencyActive}
         onToggleSimulateAlert={toggleSimulateAlert}
       />
 
@@ -473,29 +491,32 @@ export default function DashboardPage() {
       {isEmergencyActive && (
         <div className="fixed inset-0 pointer-events-none z-[9999] emergency-vignette flex flex-col justify-between p-3 sm:p-5">
           {/* Top Floating Alert Banner */}
-          <div className="flex items-center justify-between w-full max-w-7xl mx-auto pointer-events-auto">
-            <div className="flex items-center gap-2 bg-red-950/95 border border-red-500/80 px-4 py-2 rounded-xl shadow-[0_0_25px_rgba(239,68,68,0.7)] backdrop-blur-md">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
-              <span className="font-mono text-xs font-black text-red-100 tracking-wider">
-                🚨 CRITICAL DEFCON-1 ALERT // ตรวจพบระบบขัดข้องฉุกเฉิน
-              </span>
+          <div className="flex flex-col sm:flex-row items-center justify-between w-full max-w-7xl mx-auto pointer-events-auto gap-3">
+            <div className="flex items-center gap-2.5 bg-red-950/95 border border-red-500 px-4 py-2 rounded-xl shadow-[0_0_25px_rgba(239,68,68,0.7)] backdrop-blur-md">
+              <span className="w-3 h-3 rounded-full bg-red-500 animate-ping shrink-0" />
+              <div className="flex flex-col">
+                <span className="font-mono text-xs sm:text-sm font-black text-red-100 tracking-wider">
+                  🚨 CRITICAL DEFCON-1 ALERT // ตรวจพบระบบขัดข้องฉุกเฉิน
+                </span>
+                <span className="text-[10px] text-red-300 font-mono">
+                  (เสียงไซเรนและกรอบแดงจะทำงานต่อเนื่อง จนกว่าจะมีผู้กดยืนยันรับทราบ)
+                </span>
+              </div>
             </div>
 
-            {isSimulatingAlert && (
-              <button
-                onClick={() => setIsSimulatingAlert(false)}
-                className="flex items-center gap-1.5 bg-black/85 hover:bg-red-950 border border-red-500 text-red-200 text-xs px-3.5 py-2 rounded-xl shadow-lg transition-all"
-              >
-                <span>✕ ปิดโหมดจำลองกรอบแดง</span>
-              </button>
-            )}
+            <button
+              onClick={handleSilenceAlert}
+              className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 border border-white/40 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl shadow-[0_0_25px_rgba(239,68,68,0.85)] hover:scale-105 active:scale-95 transition-all shrink-0 cursor-pointer"
+            >
+              <span>🔕 กดรับทราบและปิดเสียงเตือน (ACKNOWLEDGE & SILENCE)</span>
+            </button>
           </div>
 
           {/* 4 Corner Tech Brackets (Cyber HUD) */}
-          <div className="absolute top-2 left-2 w-8 h-8 border-t-[3px] border-l-[3px] border-red-500 pointer-events-none" />
-          <div className="absolute top-2 right-2 w-8 h-8 border-t-[3px] border-r-[3px] border-red-500 pointer-events-none" />
-          <div className="absolute bottom-2 left-2 w-8 h-8 border-b-[3px] border-l-[3px] border-red-500 pointer-events-none" />
-          <div className="absolute bottom-2 right-2 w-8 h-8 border-b-[3px] border-r-[3px] border-red-500 pointer-events-none" />
+          <div className="absolute top-2 left-2 w-10 h-10 border-t-[3px] border-l-[3px] border-red-500 pointer-events-none" />
+          <div className="absolute top-2 right-2 w-10 h-10 border-t-[3px] border-r-[3px] border-red-500 pointer-events-none" />
+          <div className="absolute bottom-2 left-2 w-10 h-10 border-b-[3px] border-l-[3px] border-red-500 pointer-events-none" />
+          <div className="absolute bottom-2 right-2 w-10 h-10 border-b-[3px] border-r-[3px] border-red-500 pointer-events-none" />
         </div>
       )}
     </div>
