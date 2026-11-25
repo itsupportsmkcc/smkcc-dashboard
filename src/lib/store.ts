@@ -26,6 +26,14 @@ export interface HistoryEntry {
   message?: string;
 }
 
+const SERVICE_ENV_MAPPING: Record<string, string> = {
+  "smkcc-assetx": "DB_SMKCC_ASSETX",
+  "smkcc-kumwatsadu": "DB_SMKCC_KUMWATSADU",
+  "smcc-admission": "DB_SMCC_ADMISSION",
+  "attendance-system": "DB_ATTENDANCE_SYSTEM",
+  "smkcc-student-care": "DB_SMKCC_STUDENT_CARE",
+};
+
 export function getServices(): ServiceDefinition[] {
   ensureDataDir();
   if (!fs.existsSync(SERVICES_FILE)) {
@@ -33,7 +41,15 @@ export function getServices(): ServiceDefinition[] {
   }
   try {
     const raw = fs.readFileSync(SERVICES_FILE, "utf-8").replace(/^\uFEFF/, "");
-    return JSON.parse(raw);
+    const list: ServiceDefinition[] = JSON.parse(raw);
+    return list.map(svc => {
+      const envKey = SERVICE_ENV_MAPPING[svc.id];
+      const envConn = envKey ? process.env[envKey] : undefined;
+      return {
+        ...svc,
+        dbConnectionString: envConn || svc.dbConnectionString,
+      };
+    });
   } catch (err) {
     console.error("Error reading services.json:", err);
     return [];

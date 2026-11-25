@@ -13,6 +13,7 @@ import {
   Database,
   Globe,
   Radio,
+  BellRing,
 } from "lucide-react";
 
 interface SettingsModalProps {
@@ -38,6 +39,26 @@ export function SettingsModal({
   const [isEditingNew, setIsEditingNew] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [isTestingLine, setIsTestingLine] = useState(false);
+  const [lineResult, setLineResult] = useState<string | null>(null);
+
+  const handleTestLine = async () => {
+    setIsTestingLine(true);
+    setLineResult(null);
+    try {
+      const res = await fetch("/api/alerts/line-test", { method: "POST" });
+      const data = await res.json();
+      if (res.ok) {
+        setLineResult("✅ ส่งเข้า LINE สำเร็จ!");
+      } else {
+        setLineResult("❌ ส่งไม่สำเร็จ: " + (data.error || ""));
+      }
+    } catch (e: any) {
+      setLineResult("❌ เกิดข้อผิดพลาด: " + e.message);
+    } finally {
+      setIsTestingLine(false);
+    }
+  };
 
   // Form states
   const [name, setName] = useState("");
@@ -168,7 +189,7 @@ export function SettingsModal({
               </button>
             ))}
 
-            <div className="pt-4 border-t border-border/50">
+            <div className="pt-4 border-t border-border/50 space-y-2">
               <button
                 onClick={onTriggerAutoDiscovery}
                 className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-secondary/60 hover:bg-secondary border border-border text-xs text-muted-foreground hover:text-white transition-all"
@@ -176,6 +197,21 @@ export function SettingsModal({
                 <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
                 <span>สแกนค้นหาระบบบนไดรฟ์ D:\ ใหม่</span>
               </button>
+
+              <button
+                type="button"
+                onClick={handleTestLine}
+                disabled={isTestingLine}
+                className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-800/40 text-xs text-emerald-300 font-medium transition-all disabled:opacity-50"
+              >
+                <BellRing className="w-3.5 h-3.5 text-emerald-400" />
+                <span>{isTestingLine ? "กำลังส่ง..." : "ทดสอบส่งแจ้งเตือนเข้า LINE"}</span>
+              </button>
+              {lineResult && (
+                <div className="text-[11px] text-center text-emerald-400 font-mono py-1">
+                  {lineResult}
+                </div>
+              )}
             </div>
           </div>
 

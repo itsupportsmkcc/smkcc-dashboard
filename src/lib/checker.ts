@@ -14,6 +14,7 @@ import {
   setLiveSnapshot,
   HistoryEntry,
 } from "./store";
+import { sendLineOutageAlert, sendLineRecoveryAlert } from "./lineAlert";
 
 async function checkHttp(
   url: string,
@@ -254,13 +255,22 @@ function handleIncidentLifecycle(
         isResolved: false,
       };
       saveIncidents([newIncident, ...incidents]);
+
+      // Trigger LINE Outage Alert if critical outage (down)
+      if (currentStatus === "down") {
+        sendLineOutageAlert(service.name, service.id, message, nowIso).catch(() => {});
+      }
     }
   } else if (currentStatus === "operational") {
     if (ongoing) {
       // Resolve existing incident
+      const startedAt = ongoing.startedAt;
       ongoing.isResolved = true;
       ongoing.resolvedAt = nowIso;
       saveIncidents([...incidents]);
+
+      // Trigger LINE Recovery Alert
+      sendLineRecoveryAlert(service.name, service.id, startedAt, nowIso).catch(() => {});
     }
   }
 }

@@ -147,7 +147,8 @@ const CACHE_TTL_MS = 30000; // 30 seconds cache
 
 export async function fetchAdmissionMetrics(): Promise<AdmissionMetrics> {
   const connectionString =
-    "postgresql://neondb_owner:npg_4yW8dlTHZaMj@ep-fragrant-heart-b31mmb3s-pooler.c-4.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
+    process.env.DB_SMCC_ADMISSION ||
+    "";
 
   const client = new Client({
     connectionString,
@@ -225,7 +226,8 @@ export async function fetchAdmissionMetrics(): Promise<AdmissionMetrics> {
 
 export async function fetchAttendanceMetrics(): Promise<AttendanceMetrics> {
   const connectionString =
-    "postgresql://neondb_owner:npg_zC2AyVnoYP7k@ep-little-waterfall-aozptau3.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
+    process.env.DB_ATTENDANCE_SYSTEM ||
+    "";
 
   const client = new Client({
     connectionString,
@@ -275,7 +277,8 @@ export async function fetchAttendanceMetrics(): Promise<AttendanceMetrics> {
 
 export async function fetchAssetMetrics(): Promise<AssetMetrics> {
   const connectionString =
-    "postgresql://postgres.ybaimqsliodimktwleio:3FJ77M%2FdXe%3FMC*s@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres";
+    process.env.DB_SMKCC_ASSETX ||
+    "";
 
   const client = new Client({
     connectionString,
@@ -409,7 +412,8 @@ export async function fetchAssetMetrics(): Promise<AssetMetrics> {
 
 export async function fetchWatsaduMetrics(): Promise<WatsaduMetrics> {
   const connectionString =
-    "postgresql://neondb_owner:npg_L54FafqonOEt@ep-little-heart-a1ng9vap-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
+    process.env.DB_SMKCC_KUMWATSADU ||
+    "";
 
   const client = new Client({
     connectionString,
@@ -536,7 +540,7 @@ export async function fetchStudentCareMetrics(): Promise<StudentCareMetrics> {
     { category: "mental_health", label: "สุขภาพจิตและความเครียด", count: 5, percentage: 8.3 },
   ];
 
-  const connectionString = "postgresql://postgres:postgres@localhost:5434/student_care?schema=public";
+  const connectionString = process.env.DB_SMKCC_STUDENT_CARE || "postgresql://postgres:postgres@localhost:5434/student_care?schema=public";
   const client = new Client({
     connectionString,
     connectionTimeoutMillis: 3000,
